@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>AMApplicationBuild</key>
-	<string>417</string>
+	<string>419</string>
 	<key>AMApplicationVersion</key>
 	<string>2.6</string>
 	<key>AMDocumentVersion</key>
@@ -59,8 +59,18 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
-					<string>/usr/sbin/networksetup -setairportpower en1 off
-/usr/local/bin/blueutil off</string>
+					<string>WIFI=$(/usr/sbin/networksetup -listallhardwareports | grep Wi-Fi -A2 | grep Device | sed 's/Device: //')
+
+/usr/sbin/networksetup -getairportpower $WIFI | grep On
+
+if [ $? -eq 0 ]; then
+	/usr/sbin/networksetup -setairportpower $WIFI off
+	/usr/local/bin/blueutil off
+else
+	/usr/sbin/networksetup -setairportpower $WIFI on
+	/usr/local/bin/blueutil on
+fi
+</string>
 					<key>CheckedForUserDefaultShell</key>
 					<true/>
 					<key>inputMethod</key>
@@ -173,7 +183,7 @@
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>309.000000:253.000000</string>
+				<string>309.000000:433.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/English.lproj/main.nib</string>
 			</dict>
